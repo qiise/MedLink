@@ -16,18 +16,18 @@ const Index = () => {
         animate={{
           background: [
             `radial-gradient(circle at 20% 20%, #0EA5E9 0%, transparent 50%),
-             radial-gradient(circle at 80% 80%, #0EA5E9 0%, transparent 50%),
+             radial-gradient(circle at 75% 20%, #0EA5E9 0%, transparent 50%),
              black`,
-            `radial-gradient(circle at 25% 25%, #0EA5E9 0%, transparent 55%),
-             radial-gradient(circle at 75% 75%, #0EA5E9 0%, transparent 55%),
+            `radial-gradient(circle at 20% 20%, #0EA5E9 0%, transparent 55%),
+             radial-gradient(circle at 80% 80%, #0EA5E9 0%, transparent 55%),
              black`,
-            `radial-gradient(circle at 20% 20%, #0EA5E9 0%, transparent 50%),
-             radial-gradient(circle at 80% 80%, #0EA5E9 0%, transparent 50%),
+            `radial-gradient(circle at 30% 30%, #0EA5E9 0%, transparent 50%),
+             radial-gradient(circle at 75% 75%, #0EA5E9 0%, transparent 50%),
              black`,
           ]
         }}
         transition={{
-          duration: 8,
+          duration: 4,
           repeat: Infinity,
           repeatType: "reverse",
           ease: "easeInOut"
@@ -56,7 +56,7 @@ const Index = () => {
             transition={{ delay: 0.2, duration: 0.8 }}
             className="text-4xl md:text-6xl font-bold tracking-tight text-white"
           >
-            Welcome to an Experience
+            Welcome to MedLink!
           </motion.h1>
           
           <motion.p
@@ -65,7 +65,7 @@ const Index = () => {
             transition={{ delay: 0.4, duration: 0.8 }}
             className="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto"
           >
-            Discover a new way of experiencing digital design through minimalist beauty and thoughtful interactions.
+            Discover your future through personalized assistance.
           </motion.p>
 
           <div className="flex justify-center space-x-6">
@@ -78,14 +78,14 @@ const Index = () => {
               onClick={() => navigate("/forum")}
               className="relative inline-flex items-center px-8 py-3 overflow-hidden bg-white text-black rounded-full group focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
             >
-              <span className="relative">Forum</span>
+              <span className="relative">Forums</span>
               <motion.span
-                initial={{ x: -10, opacity: 0 }}
-                animate={{ x: isHovered1 ? 0 : -10, opacity: isHovered1 ? 1 : 0 }}
+                initial={{ x: 0, opacity: 0 }}
+                animate={{ x: isHovered1 ? 10 : 0, opacity: isHovered1 ? 1 : 0 }}
                 transition={{ duration: 0.3 }}
                 className="ml-2"
               >
-                →
+                  ➪
               </motion.span>
             </motion.button>
 
@@ -100,12 +100,12 @@ const Index = () => {
             >
               <span className="relative">Profiles</span>
               <motion.span
-                initial={{ x: -10, opacity: 0 }}
-                animate={{ x: isHovered2 ? 0 : -10, opacity: isHovered2 ? 1 : 0 }}
+                initial={{ x: 0, opacity: 0 }}
+                animate={{ x: isHovered2 ? 10 : 0, opacity: isHovered2 ? 1 : 0 }}
                 transition={{ duration: 0.3 }}
                 className="ml-2"
               >
-                →
+                  ➪
               </motion.span>
             </motion.button>
           </div>

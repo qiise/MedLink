@@ -1,5 +1,4 @@
-
-import { useState } from "react";
+import { useState, useEffect } from "react";  // Add useEffect here
 import { PostCard } from "./PostCard";
 import { NewPostForm } from "./NewPostForm";
 
@@ -42,10 +41,15 @@ export function ForumTab() {
     const postPayload = {
       ...newPost,
       author: "CurrentUser",
-      replies: 0
+      replies: 0,
+      timestamp: new Date().toISOString() 
     };
 
-    fetch('http://127.0.0.1:8000/api/posts/', {
+    var id = 1234
+
+    console.log(postPayload)
+
+    fetch(`http://127.0.0.1:8000/api/posts/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

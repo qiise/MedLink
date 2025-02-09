@@ -1,42 +1,39 @@
 import { useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/components/ui/use-toast";
 
-interface LocationState {
-  mentor: {
-    name: string;
-    title: string;
-    specialty: string;
-    school: string;
-  };
-}
-
-export default function MentorRequest() {
-  const [message, setMessage] = useState("");
+export default function NewPostForm() {
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
   const navigate = useNavigate();
-  const location = useLocation();
-  const { toast } = useToast();
-  const { mentor } = (location.state as LocationState) || { mentor: null };
-
-  if (!mentor) {
-    navigate("/");
-    return null;
-  }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // In a real app, this would send the request to a backend
-    toast({
-      title: "Request Sent!",
-      description: `Your connection request has been sent to ${mentor.name}.`,
-    });
-    
-    navigate("/profiles", { state: { connectedMentor: mentor.name } });
+    if (title.trim() && content.trim()) {
+      const newPost = {
+        title: title.trim(),
+        preview: content.trim(),
+        author: localStorage.getItem("currentUser"),
+        replies: 0,
+        timestamp: new Date().toISOString()
+      };
+
+      fetch(`http://127.0.0.1:8000/api/posts/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newPost),
+      })
+      .then(response => response.json())
+      .then(() => {
+        navigate("/forum"); // Redirect to the forum after submission
+      })
+      .catch(error => console.error('Error creating post:', error));
+    }
   };
 
   return (
@@ -72,60 +69,63 @@ export default function MentorRequest() {
       />
       <div className="relative z-10 max-w-2xl mx-auto px-4 py-12">
         <button
-          onClick={() => navigate("/profiles")}
+          onClick={() => navigate("/forum")}
           className="flex items-center gap-2 text-white hover:text-gray-300 mb-6"
         >
           <ArrowLeft className="w-4 h-4" />
-          Back to Mentors
+          Back to Discussions
         </button>
-        
+
         <div className="bg-white rounded-xl p-6 shadow-sm">
           <h1 className="text-2xl font-semibold text-gray-900 mb-6">
-            Connect with {mentor.name}
+            Create a New Post
           </h1>
-          
-          <div className="mb-6 space-y-2">
-            <p className="text-gray-600">
-              <span className="font-medium">Title:</span> {mentor.title}
-            </p>
-            <p className="text-gray-600">
-              <span className="font-medium">Specialty:</span> {mentor.specialty}
-            </p>
-            <p className="text-gray-600">
-              <span className="font-medium">School:</span> {mentor.school}
-            </p>
-          </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
-                Introduction Message
+              <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-2">
+                Post Title
               </label>
-              <Textarea
-                id="message"
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-                placeholder="Introduce yourself and explain why you'd like to connect..."
-                className="min-h-[200px] placeholder:text-[#0EA5E9]"
+              <input
+                id="title"
+                type="text"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                className="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent placeholder:text-[#0EA5E9]"
+                placeholder="Enter your post title..."
                 required
               />
             </div>
-            
+
+            <div>
+              <label htmlFor="content" className="block text-sm font-medium text-gray-700 mb-2">
+                Post Content
+              </label>
+              <Textarea
+                id="content"
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+                className="w-full bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent min-h-[200px] placeholder:text-[#0EA5E9]"
+                placeholder="Write your post content here..."
+                required
+              />
+            </div>
+
             <div className="flex justify-end gap-4">
               <Button
                 type="button"
                 variant="outline"
-                onClick={() => navigate("/")}
+                onClick={() => navigate("/forum")}
                 className="text-gray-600 hover:text-gray-900"
-              >
+              > 
                 Cancel
               </Button>
               <Button
                 type="submit"
-                disabled={!message.trim()}
+                disabled={!title.trim() || !content.trim()}
                 className="bg-[#0EA5E9] text-white hover:opacity-90"
               >
-                Send Request
+                Create Post
               </Button>
             </div>
           </form>

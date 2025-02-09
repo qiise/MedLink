@@ -29,11 +29,40 @@ const Profiles = () => {
   ];
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] bg-gray-50">
+    <div className="min-h-[calc(100vh-4rem)] bg-gray-50 relative">
       <ScrollArea className="h-[calc(100vh-4rem)]">
-        <div className="max-w-4xl mx-auto px-4 py-8">
-          <h1 className="flex items-center justify-center text-3xl font-bold mb-8">
-            Find a mentor today!
+        <motion.div 
+          className="absolute inset-0 z-0" 
+          animate={{
+            background: [
+              `radial-gradient(circle at 20% 20%, #0EA5E9 0%, transparent 50%),
+               radial-gradient(circle at 75% 20%, #0EA5E9 0%, transparent 50%),
+               black`,
+              `radial-gradient(circle at 20% 20%, #0EA5E9 0%, transparent 55%),
+               radial-gradient(circle at 80% 80%, #0EA5E9 0%, transparent 55%),
+               black`,
+              `radial-gradient(circle at 30% 30%, #0EA5E9 0%, transparent 50%),
+               radial-gradient(circle at 75% 75%, #0EA5E9 0%, transparent 50%),
+               black`,
+            ]
+          }}
+          transition={{
+            duration: 4,
+            repeat: Infinity,
+            repeatType: "reverse",
+            ease: "easeInOut"
+          }}
+        />
+        <div 
+          className="absolute inset-0 z-0"
+          style={{
+            backgroundImage: `radial-gradient(rgba(255, 255, 255, 0.15) 2px, transparent 2px)`,
+            backgroundSize: '30px 30px'
+          }}
+        />
+        <div className="relative z-10 max-w-4xl mx-auto px-4 py-8">
+          <h1 className="flex items-center justify-center text-3xl font-bold mb-8 text-white">
+            Find a mentor today by signing up for a membership!
           </h1>
 
           <div className="space-y-6">
@@ -75,7 +104,7 @@ const MentorCard = ({ name, title, specialty, school, imageUrl }) => {
       <div className="flex-1 space-y-2">
         <div>
           <h3 className="text-lg font-semibold text-gray-900">{name}</h3>
-          <p className="text-primary">{title}</p>
+          <p className="text-[#0EA5E9]">{title}</p>
         </div>
         <p className="text-sm text-gray-600">
           <span className="font-medium">Specialty:</span> {specialty}
@@ -90,7 +119,7 @@ const MentorCard = ({ name, title, specialty, school, imageUrl }) => {
         className={`ml-4 px-4 py-2 rounded-lg transition-all flex items-center justify-center gap-2
           ${isConnected 
             ? 'bg-green-500 text-white cursor-default'
-            : 'bg-accent text-gray-900 hover:opacity-90'
+            : 'bg-[#0EA5E9] text-white hover:opacity-90'
           }`}
       >
         {isConnected ? (

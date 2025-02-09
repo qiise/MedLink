@@ -32,9 +32,9 @@ const NavBar = () => {
   };
 
   let navBarText = "";
-  if (location.pathname === "/profiles") {
-    navBarText = "MENTORSHIP";
-  } else if (location.pathname === "/login") {
+  if(location.pathname === "/profiles" || location.pathname === "/Membership"){
+    navBarText="MENTORSHIP";
+  }else if(location.pathname ==="/login"){
     navBarText = "LOGIN";
   }
 
@@ -77,6 +77,14 @@ const NavBar = () => {
               <span className="absolute left-1/2 transform -translate-x-1/2 text-white font-medium font-bold">
                 {navBarText}
               </span>
+            )}
+            {location.pathname === "/profiles" && (
+              <Link
+                to="/Membership" 
+                className="text-yellow-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+              >
+                Membership Prices
+              </Link>
             )}
           </div>
         </div>

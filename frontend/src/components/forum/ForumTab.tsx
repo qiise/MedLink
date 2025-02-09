@@ -40,7 +40,7 @@ export function ForumTab() {
   const handleCreatePost = (newPost: { title: string; preview: string }) => {
     const postPayload = {
       ...newPost,
-      author: "CurrentUser",
+      author: localStorage.getItem("currentUser"),
       replies: 0,
       timestamp: new Date().toISOString() 
     };

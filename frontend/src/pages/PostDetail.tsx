@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { MessageCircle, ArrowLeft } from "lucide-react";
@@ -39,8 +40,8 @@ const PostDetail = () => {
     if (!newReply.trim()) return;
   
     const replyPayload = {
-      author: "CurrentUser",  // This should match the `author` field in your model
-      content: newReply,       // This should match the `content` field
+      author: localStorage.getItem("currentUser"),
+      content: newReply,
       timestamp: new Date().toISOString() 
     };
   
@@ -72,11 +73,40 @@ const PostDetail = () => {
   if (!post) return <div>Loading...</div>;  // Show loading until post data is fetched
 
   return (
-    <div className="min-h-screen bg-[#F6F8FA] p-4">
-      <div className="max-w-4xl mx-auto space-y-6">
+    <div className="min-h-screen relative">
+      <motion.div 
+        className="absolute inset-0 z-0" 
+        animate={{
+          background: [
+            `radial-gradient(circle at 20% 20%, #0EA5E9 0%, transparent 50%),
+             radial-gradient(circle at 75% 20%, #0EA5E9 0%, transparent 50%),
+             black`,
+            `radial-gradient(circle at 20% 20%, #0EA5E9 0%, transparent 55%),
+             radial-gradient(circle at 80% 80%, #0EA5E9 0%, transparent 55%),
+             black`,
+            `radial-gradient(circle at 30% 30%, #0EA5E9 0%, transparent 50%),
+             radial-gradient(circle at 75% 75%, #0EA5E9 0%, transparent 50%),
+             black`,
+          ]
+        }}
+        transition={{
+          duration: 4,
+          repeat: Infinity,
+          repeatType: "reverse",
+          ease: "easeInOut"
+        }}
+      />
+      <div 
+        className="absolute inset-0 z-0"
+        style={{
+          backgroundImage: `radial-gradient(rgba(255, 255, 255, 0.15) 2px, transparent 2px)` ,
+          backgroundSize: '30px 30px'
+        }}
+      />
+      <div className="relative z-10 max-w-4xl mx-auto space-y-6 p-4">
         <button
           onClick={() => navigate(-1)}
-          className="flex items-center text-gray-600 hover:text-gray-900 transition-colors"
+          className="flex items-center text-white hover:text-gray-300 transition-colors"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
           Back to Forum
@@ -98,14 +128,16 @@ const PostDetail = () => {
             value={newReply}
             onChange={(e) => setNewReply(e.target.value)}
             placeholder="Share your thoughts..."
-            className="mb-4"
+            className="mb-4 placeholder:text-[#0EA5E9]"
           />
-          <Button onClick={handleSubmitReply}>Post Reply</Button>
+          <Button onClick={handleSubmitReply} className="bg-[#0EA5E9] text-white hover:opacity-90">
+            Post Reply
+          </Button>
         </div>
 
         <div className="space-y-4">
-          <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
-            <MessageCircle className="w-5 h-5" />
+          <h2 className="text-lg font-semibold text-white flex items-center gap-2">
+            <MessageCircle className="w-5 h-5 text-white" />
             Replies ({replies.length})
           </h2>
           {replies.map((reply, index) => (
@@ -119,7 +151,7 @@ const PostDetail = () => {
                   day: 'numeric', 
                   year: 'numeric', 
                   hour: 'numeric', 
-                  minute: '2-digit'  // This removes the seconds
+                  minute: '2-digit'
                 })}</span>
               </div>
             </div>

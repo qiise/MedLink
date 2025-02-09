@@ -98,7 +98,7 @@ const Index = () => {
               onClick={() => navigate("/profiles")}
               className="relative inline-flex items-center px-8 py-3 overflow-hidden bg-white text-black rounded-full group focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
             >
-              <span className="relative">Profiles</span>
+              <span className="relative">Mentorship</span>
               <motion.span
                 initial={{ x: 0, opacity: 0 }}
                 animate={{ x: isHovered2 ? 10 : 0, opacity: isHovered2 ? 1 : 0 }}

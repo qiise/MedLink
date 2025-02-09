@@ -1,6 +1,7 @@
 
 import { motion } from "framer-motion";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import SearchBar from "@/components/SearchBar"; 
 
 const Profiles = () => {
   // Placeholder data - in a real app, this would come from an API
@@ -13,24 +14,6 @@ const Profiles = () => {
       location: "San Francisco, CA",
       connections: 500,
       image: "https://i.pravatar.cc/150?img=1",
-    },
-    {
-      id: 2,
-      name: "Mike Chen",
-      role: "Full Stack Engineer",
-      company: "StartupX",
-      location: "New York, NY",
-      connections: 423,
-      image: "https://i.pravatar.cc/150?img=2",
-    },
-    {
-      id: 3,
-      name: "Emma Wilson",
-      role: "UI/UX Designer",
-      company: "DesignHub",
-      location: "London, UK",
-      connections: 289,
-      image: "https://i.pravatar.cc/150?img=3",
     },
     {
       id: 4,
@@ -52,11 +35,19 @@ const Profiles = () => {
     },
   ];
 
+
+
   return (
     <div className="min-h-[calc(100vh-4rem)] bg-gray-50">
       <ScrollArea className="h-[calc(100vh-4rem)]">
         <div className="max-w-4xl mx-auto px-4 py-8">
-          <h1 className="text-3xl font-bold mb-8">Professional Profiles</h1>
+          <h1 className=" flex items-center justify-center text-3xl font-bold mb-8">Find a mentor today!
+
+          </h1>
+
+    
+            <SearchBar />
+        
           <div className="space-y-6">
             {profiles.map((profile) => (
               <motion.div

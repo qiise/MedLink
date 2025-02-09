@@ -30,7 +30,7 @@ const ChatbotPage = () => {
         };
         setMessages((prev) => [...prev, userMessage]);
         setIsTyping(true);
-
+    
         try {
             const response = await fetch("http://localhost:8000/api/chatbot/chat/", {
                 method: "POST",
@@ -39,21 +39,22 @@ const ChatbotPage = () => {
                 },
                 body: JSON.stringify({ message: content }),
             });
-
+    
             if (!response.ok) {
                 throw new Error("Failed to fetch response from chatbot API");
             }
-
+    
             const data = await response.json();
-
-        setTimeout(() => {
-            const botMessage: Message = {
-                id: (Date.now() + 1).toString(),
-                content: DOMPurify.sanitize(marked.parse(data.content)),
-                sender: "bot",
-                timestamp: new Date(),
-            };
-            setMessages((prev) => [...prev, botMessage]);
+    
+            setTimeout(() => {
+                const botMessage: Message = {
+                    id: (Date.now() + 1).toString(),
+                    content: DOMPurify.sanitize(marked.parse(data.content)),
+                    sender: "bot",
+                    timestamp: new Date(),
+                };
+                setMessages((prev) => [...prev, botMessage]);
+            }, 1000); // Added this closing parenthesis and delay
         } catch (error) {
             toast({
                 title: "Error",
@@ -64,6 +65,7 @@ const ChatbotPage = () => {
             setIsTyping(false);
         }
     };
+    
 
     return (
         <div className="flex min-h-screen flex-col relative">

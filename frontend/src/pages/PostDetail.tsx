@@ -118,7 +118,13 @@ const PostDetail = () => {
           <div className="flex items-center text-sm text-gray-500">
             <span>{post.author}</span>
             <span className="mx-2">•</span>
-            <span>{new Date(post.timestamp).toLocaleString()}</span>
+            <span>{new Date(post.timestamp).toLocaleString('en-US', { 
+              year: 'numeric', 
+              month: 'numeric', 
+              day: 'numeric', 
+              hour: 'numeric', 
+              minute: '2-digit'  // No seconds here
+            })}</span>
           </div>
         </div>
 

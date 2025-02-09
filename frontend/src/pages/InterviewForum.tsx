@@ -4,32 +4,79 @@ import { motion } from "framer-motion";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { MessageCircle } from "lucide-react";
 
-const Forum = () => {
-  const [posts, setPosts] = useState([]);
-  const [activeTab, setActiveTab] = useState(null);  // Track active tab
+interface Post {
+  id: number;
+  title: string;
+  preview: string;
+  author: string;
+  replies: number;
+  timestamp: string;
+}
+
+const InterviewForum = () => {
+  // Mocked posts for InterviewForum
+  const mockPosts: Post[] = [
+    {
+      id: 1,
+      title: "How to Prepare for a Medical School Interview?",
+      preview: "Looking for advice on how to prepare for my upcoming medical school interview. Any tips on what to expect and how to stand out?",
+      author: "FutureMD123",
+      replies: 18,
+      timestamp: "2025-02-09T16:07:00Z",
+    },
+    {
+      id: 2,
+      title: "What Are the Most Common Medical School Interview Questions?",
+      preview: "Can anyone share the most common questions asked in medical school interviews? I want to be as prepared as possible!",
+      author: "MedApplicant",
+      replies: 24,
+      timestamp: "2025-02-08T12:29:00Z",
+    },
+    {
+      id: 3,
+      title: "Medschool Interview Tips for the MMI Format",
+      preview: "I have an upcoming medical school interview in the MMI (Multiple Mini Interview) format. How do I prepare for it?",
+      author: "MedStudentX",
+      replies: 10,
+      timestamp: "2025-02-07T19:43:00Z",
+    },
+    {
+      id: 4,
+      title: "How to Answer 'Why Do You Want to Be a Doctor?'",
+      preview: "Struggling with answering the classic interview question: 'Why do you want to be a doctor?' Any advice or insights?",
+      author: "DoctorInTheMaking",
+      replies: 16,
+      timestamp: "2025-02-06T21:11:00Z",
+    },
+  ];
+
+  const [posts, setPosts] = useState<Post[]>(mockPosts);
+  const [activeTab, setActiveTab] = useState<string | null>("interviews");
   const navigate = useNavigate();
+
 
   useEffect(() => {
     fetch('http://127.0.0.1:8000/api/posts/')
       .then(response => response.json())
-      .then((data) => {
-        const sortedPosts = data.sort((a: any, b: any) => {
-          return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime();
-        });
-        setPosts(sortedPosts);
+      .then(data => {
+        // Filter posts with specific IDs (e.g., IDs 1, 2, and 3)
+        const filteredPosts = data.filter((post: Post) => [24, 25, 26, 27].includes(post.id));
+        setPosts(filteredPosts);
       })
       .catch(error => console.error('Error fetching posts:', error));
   }, []);
-  
-  
 
-  const handleTabClick = (tab) => {
+
+  const handleTabClick = (tab: string) => {
     if (activeTab === tab) {
       setActiveTab(null); // Unselect if the same tab is clicked again
+      if (tab === "interviews") {
+        navigate("/forum"); // Navigate to normal forum page when interviews tab is unselected
+      }
     } else {
-      setActiveTab(tab);  // Set new active tab
+      setActiveTab(tab); // Set new active tab
+      navigate(`/forum/${tab}`);
     }
-    navigate(`/forum/${tab}`);
   };
 
   return (
@@ -66,9 +113,9 @@ const Forum = () => {
         />
         <div className="relative z-10 max-w-4xl mx-auto px-4 py-8">
           <div className="flex justify-between items-center mb-8">
-            <h1 className="text-3xl font-bold text-white">Community Forum</h1>
+            <h1 className="text-3xl font-bold text-white">Interview Forum</h1>
             <button 
-              onClick={() => navigate("/forum/new")}
+              onClick={() => navigate("/forum/interviews/new")}
               className="px-4 py-2 bg-white text-black rounded-lg hover:opacity-90 transition-opacity"
             >
               New Post
@@ -78,14 +125,14 @@ const Forum = () => {
           <div className="mb-4 flex space-x-4">
             {["mcat", "interviews", "essays", "stats"].map((tab) => (
               <div 
-              key={tab}
-              onClick={() => handleTabClick(tab)}
-              className={`px-6 py-2 rounded-lg cursor-pointer transition-opacity 
-                ${activeTab === tab ? "bg-gray-400 text-white" : "bg-white text-black hover:bg-gray-200"} 
-                ${activeTab === tab ? "font-semibold" : ""}`}
-            >
-              {tab === "mcat" ? tab.toUpperCase() : tab.charAt(0).toUpperCase() + tab.slice(1)} {/* Make only MCAT in uppercase */}
-            </div>
+                key={tab}
+                onClick={() => handleTabClick(tab)}
+                className={`px-6 py-2 rounded-lg cursor-pointer transition-opacity 
+                  ${activeTab === tab ? "bg-gray-400 text-white" : "bg-white text-black hover:bg-gray-200"} 
+                  ${activeTab === tab ? "font-semibold" : ""}`}
+              >
+                {tab === "mcat" ? tab.toUpperCase() : tab.charAt(0).toUpperCase() + tab.slice(1)} {/* Make only MCAT in uppercase */}
+              </div>
             ))}
           </div>
           <div className="space-y-4">
@@ -99,7 +146,7 @@ const Forum = () => {
   );
 };
 
-const PostCard = ({ id, title, preview, author, replies, timestamp }) => {
+const PostCard = ({ id, title, preview, author, replies, timestamp }: Post) => {
   const navigate = useNavigate();
   return (
     <motion.div
@@ -129,4 +176,4 @@ const PostCard = ({ id, title, preview, author, replies, timestamp }) => {
   );
 };
 
-export default Forum;
+export default InterviewForum;

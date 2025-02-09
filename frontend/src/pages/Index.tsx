@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import HeartbeatLine from '../components/HeartbeatLine'; // Make sure this import is correct
 
 const Index = () => {
   const navigate = useNavigate();
@@ -14,10 +15,7 @@ const Index = () => {
       setUsername(storedUser);
     };
 
-    // Initial check for stored user
     handleStorageChange();
-
-    // Listen for changes in localStorage (login/logout)
     window.addEventListener("storage", handleStorageChange);
 
     return () => {
@@ -25,10 +23,11 @@ const Index = () => {
     };
   }, []);
 
-  const isUserSignedIn = username !== null; // Check if user is signed in
+  const isUserSignedIn = username !== null;
 
   return (
     <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center overflow-hidden relative">
+      
       {/* Animated gradient background */}
       <motion.div 
         className="absolute inset-0" 
@@ -52,7 +51,7 @@ const Index = () => {
           ease: "easeInOut"
         }}
       />
-      
+
       {/* Dot overlay */}
       <div 
         className="absolute inset-0"
@@ -62,33 +61,37 @@ const Index = () => {
         }}
       />
 
+      {/* Main content */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+          animate={{ opacity: 1, y: -50 }}
           transition={{ duration: 0.6 }}
           className="space-y-8"
         >
+          {/* Heading with Merriweather font */}
           <motion.h1
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2, duration: 0.8 }}
-            className="text-4xl md:text-6xl font-bold tracking-tight text-white"
+            className="text-4xl md:text-6xl font-bold tracking-tight text-white font-merriweather"
           >
             {username ? `Welcome to MedLink, ${username}!` : "Welcome to MedLink!"}
           </motion.h1>
           
+          {/* Subheading with Source Sans Pro font */}
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4, duration: 0.8 }}
-            className="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto"
+            className="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto font-source-sans"
           >
             Discover your future through personalized assistance.
           </motion.p>
 
+          {/* Buttons */}
           <div className="flex justify-center space-x-6">
-            {/* Forum Button */}
+            {/* Forums Button */}
             <motion.button
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -98,7 +101,7 @@ const Index = () => {
               onClick={() => isUserSignedIn && navigate("/forum")}
               disabled={!isUserSignedIn}
               className={`relative inline-flex items-center px-8 py-3 overflow-hidden rounded-full group focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 
-                ${isUserSignedIn ? "bg-white text-black" : "bg-gray-400 text-gray-700 cursor-not-allowed"}`}
+                ${isUserSignedIn ? "bg-white text-black" : "bg-gray-400 text-gray-700 cursor-not-allowed"} font-source-sans`}
             >
               <span className="relative">Forums</span>
               <motion.span
@@ -107,7 +110,7 @@ const Index = () => {
                 transition={{ duration: 0.3 }}
                 className="ml-2"
               >
-                  →
+                →
               </motion.span>
             </motion.button>
 
@@ -121,7 +124,7 @@ const Index = () => {
               onClick={() => isUserSignedIn && navigate("/profiles")}
               disabled={!isUserSignedIn}
               className={`relative inline-flex items-center px-8 py-3 overflow-hidden rounded-full group focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 
-                ${isUserSignedIn ? "bg-white text-black" : "bg-gray-400 text-gray-700 cursor-not-allowed"}`}
+                ${isUserSignedIn ? "bg-white text-black" : "bg-gray-400 text-gray-700 cursor-not-allowed"} font-source-sans`}
             >
               <span className="relative">Mentorship</span>
               <motion.span
@@ -130,12 +133,15 @@ const Index = () => {
                 transition={{ duration: 0.3 }}
                 className="ml-2"
               >
-                  →
+                →
               </motion.span>
             </motion.button>
           </div>
         </motion.div>
       </div>
+      
+      {/* Heartbeat Animation */}
+      <HeartbeatLine />
     </div>
   );
 };

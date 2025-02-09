@@ -4,32 +4,77 @@ import { motion } from "framer-motion";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { MessageCircle } from "lucide-react";
 
-const Forum = () => {
-  const [posts, setPosts] = useState([]);
-  const [activeTab, setActiveTab] = useState(null);  // Track active tab
+interface Post {
+  id: number;
+  title: string;
+  preview: string;
+  author: string;
+  replies: number;
+  timestamp: string;
+}
+
+const McatForum = () => {
+  // Mocked posts
+  const mockPosts: Post[] = [
+    {
+      id: 1,
+      title: "Best MCAT Study Resources",
+      preview: "Looking for the best resources to study for the MCAT. Any suggestions?",
+      author: "JaneDoe",
+      replies: 12,
+      timestamp: "2025-02-09T14:02:00Z",
+    },
+    {
+      id: 2,
+      title: "MCAT Study Schedule",
+      preview: "Does anyone have a good MCAT study schedule they can recommend? Need some guidance.",
+      author: "JohnSmith",
+      replies: 8,
+      timestamp: "2025-02-08T10:34:00Z",
+    },
+    {
+      id: 3,
+      title: "MCAT Practice Tests: Which Ones Are the Best?",
+      preview: "I'm looking for suggestions on which practice tests are the most helpful for the MCAT. Any ideas?",
+      author: "Student123",
+      replies: 5,
+      timestamp: "2025-02-07T18:47:00Z",
+    },
+    {
+      id: 4,
+      title: "How to Improve on the CARS Section?",
+      preview: "I'm struggling with the Critical Analysis and Reasoning Skills (CARS) section. Any advice?",
+      author: "FutureMD",
+      replies: 15,
+      timestamp: "2025-02-06T22:10:00Z",
+    },
+  ];
+
+  const [posts, setPosts] = useState<Post[]>(mockPosts);
+  const [activeTab, setActiveTab] = useState<string | null>("mcat");
   const navigate = useNavigate();
 
   useEffect(() => {
     fetch('http://127.0.0.1:8000/api/posts/')
       .then(response => response.json())
-      .then((data) => {
-        const sortedPosts = data.sort((a: any, b: any) => {
-          return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime();
-        });
-        setPosts(sortedPosts);
+      .then(data => {
+        // Filter posts with specific IDs (e.g., IDs 1, 2, and 3)
+        const filteredPosts = data.filter((post: Post) => [20, 21, 22, 23].includes(post.id));
+        setPosts(filteredPosts);
       })
       .catch(error => console.error('Error fetching posts:', error));
   }, []);
-  
-  
 
-  const handleTabClick = (tab) => {
+  const handleTabClick = (tab: string) => {
     if (activeTab === tab) {
       setActiveTab(null); // Unselect if the same tab is clicked again
+      if (tab === "mcat") {
+        navigate("/forum"); // Navigate to normal forum page when mcat tab is unselected
+      }
     } else {
-      setActiveTab(tab);  // Set new active tab
+      setActiveTab(tab); // Set new active tab
+      navigate(`/forum/${tab}`);
     }
-    navigate(`/forum/${tab}`);
   };
 
   return (
@@ -66,9 +111,9 @@ const Forum = () => {
         />
         <div className="relative z-10 max-w-4xl mx-auto px-4 py-8">
           <div className="flex justify-between items-center mb-8">
-            <h1 className="text-3xl font-bold text-white">Community Forum</h1>
+            <h1 className="text-3xl font-bold text-white">MCAT Forum</h1>
             <button 
-              onClick={() => navigate("/forum/new")}
+              onClick={() => navigate("/forum/mcat/new")}
               className="px-4 py-2 bg-white text-black rounded-lg hover:opacity-90 transition-opacity"
             >
               New Post
@@ -99,7 +144,7 @@ const Forum = () => {
   );
 };
 
-const PostCard = ({ id, title, preview, author, replies, timestamp }) => {
+const PostCard = ({ id, title, preview, author, replies, timestamp }: Post) => {
   const navigate = useNavigate();
   return (
     <motion.div
@@ -129,4 +174,4 @@ const PostCard = ({ id, title, preview, author, replies, timestamp }) => {
   );
 };
 
-export default Forum;
+export default McatForum;

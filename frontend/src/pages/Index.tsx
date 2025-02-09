@@ -107,7 +107,7 @@ const Index = () => {
                 transition={{ duration: 0.3 }}
                 className="ml-2"
               >
-                  ➚
+                  →
               </motion.span>
             </motion.button>
 
@@ -130,7 +130,7 @@ const Index = () => {
                 transition={{ duration: 0.3 }}
                 className="ml-2"
               >
-                  ➚
+                  →
               </motion.span>
             </motion.button>
           </div>

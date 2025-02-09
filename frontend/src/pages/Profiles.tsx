@@ -2,6 +2,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Check } from "lucide-react";
+import { useEffect } from "react";
 
 const Profiles = () => {
   const sampleMentors = [
@@ -78,14 +79,26 @@ const Profiles = () => {
 
 const MentorCard = ({ name, title, specialty, school, imageUrl }) => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const isConnected = location.state?.connectedMentor === name;
+  const connectedMentors = JSON.parse(localStorage.getItem('connectedMentors')) || [];
+  const isConnected = connectedMentors.includes(name);
+
+  useEffect(() => {
+    if (!localStorage.getItem('connectedMentors')) {
+      localStorage.setItem('connectedMentors', JSON.stringify([]));
+    }
+  }, []);
 
   const handleConnect = () => {
     if (!isConnected) {
       navigate("/mentor-request", {
         state: { mentor: { name, title, specialty, school } }
       });
+
+      const connectedMentors = JSON.parse(localStorage.getItem('connectedMentors')) || [];
+      connectedMentors.push(name);
+      localStorage.setItem('connectedMentors', JSON.stringify(connectedMentors));
+
+      isConnected(true);
     }
   };
 

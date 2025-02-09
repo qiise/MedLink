@@ -27,6 +27,7 @@ const NavBar = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("currentUser");
+    localStorage.removeItem("connectedMentors"); 
     window.dispatchEvent(new Event("storage"));  // Notify other components about logout
     navigate("/");  // Redirect to homepage
   };

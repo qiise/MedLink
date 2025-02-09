@@ -68,6 +68,9 @@ const NavBar = () => {
                 </button>
               </>
             )}
+            <Link to="/chatbot" className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+              Chatbot
+            </Link>
           </div>
           <div className="flex items-center">
             {navBarText && (

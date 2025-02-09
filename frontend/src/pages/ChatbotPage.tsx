@@ -4,6 +4,8 @@ import { ChatMessage } from "@/components/ChatMessage";
 import { ChatInput } from "@/components/ChatInput";
 import { TypingIndicator } from "@/components/TypingIndicator";
 import { useToast } from "@/hooks/use-toast";
+import { marked } from "marked";
+import DOMPurify from "dompurify";
 
 const INITIAL_MESSAGE: Message = {
     id: "welcome",
@@ -45,7 +47,7 @@ const ChatbotPage = () => {
 
             const botMessage: Message = {
                 id: (Date.now() + 1).toString(),
-                content: data.content,
+                content: DOMPurify.sanitize(marked.parse(data.content)),
                 sender: "bot",
                 timestamp: new Date(),
             };
@@ -75,7 +77,9 @@ const ChatbotPage = () => {
                         <div className="flex-1 space-y-4 overflow-y-auto p-4">
                             {messages.map((message) => (
                                 <ChatMessage key={message.id} message={message} />
+
                             ))}
+
                             {isTyping && (
                                 <div className="flex items-center gap-2">
                                     <div className="h-8 w-8 rounded-full bg-medical-primary flex items-center justify-center">

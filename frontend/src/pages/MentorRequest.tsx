@@ -1,6 +1,6 @@
-
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { motion } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -40,11 +40,40 @@ export default function MentorRequest() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F6F8FA] py-12">
-      <div className="max-w-2xl mx-auto px-4">
+    <div className="min-h-screen relative">
+      <motion.div 
+        className="absolute inset-0 z-0" 
+        animate={{
+          background: [
+            `radial-gradient(circle at 20% 20%, #0EA5E9 0%, transparent 50%),
+             radial-gradient(circle at 75% 20%, #0EA5E9 0%, transparent 50%),
+             black`,
+            `radial-gradient(circle at 20% 20%, #0EA5E9 0%, transparent 55%),
+             radial-gradient(circle at 80% 80%, #0EA5E9 0%, transparent 55%),
+             black`,
+            `radial-gradient(circle at 30% 30%, #0EA5E9 0%, transparent 50%),
+             radial-gradient(circle at 75% 75%, #0EA5E9 0%, transparent 50%),
+             black`,
+          ]
+        }}
+        transition={{
+          duration: 4,
+          repeat: Infinity,
+          repeatType: "reverse",
+          ease: "easeInOut"
+        }}
+      />
+      <div 
+        className="absolute inset-0 z-0"
+        style={{
+          backgroundImage: `radial-gradient(rgba(255, 255, 255, 0.15) 2px, transparent 2px)`,
+          backgroundSize: '30px 30px'
+        }}
+      />
+      <div className="relative z-10 max-w-2xl mx-auto px-4 py-12">
         <button
           onClick={() => navigate("/profiles")}
-          className="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-6"
+          className="flex items-center gap-2 text-white hover:text-gray-300 mb-6"
         >
           <ArrowLeft className="w-4 h-4" />
           Back to Mentors
@@ -77,7 +106,7 @@ export default function MentorRequest() {
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 placeholder="Introduce yourself and explain why you'd like to connect..."
-                className="min-h-[200px]"
+                className="min-h-[200px] placeholder:text-[#0EA5E9]"
                 required
               />
             </div>
@@ -87,12 +116,14 @@ export default function MentorRequest() {
                 type="button"
                 variant="outline"
                 onClick={() => navigate("/")}
+                className="text-gray-600 hover:text-gray-900"
               >
                 Cancel
               </Button>
               <Button
                 type="submit"
                 disabled={!message.trim()}
+                className="bg-[#0EA5E9] text-white hover:opacity-90"
               >
                 Send Request
               </Button>

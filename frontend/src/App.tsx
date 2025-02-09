@@ -13,6 +13,7 @@ import MentorRequest from "./pages/MentorRequest";
 import NotFound from "./pages/NotFound";
 import PostDetail from "./pages/PostDetail"; // Import the PostDetail component
 import NewPostForm from "./pages/NewPostForm";
+import Membership from "./pages/Membership";
 
 const queryClient = new QueryClient();
 
@@ -35,6 +36,7 @@ const App = () => (
               <Route path="/mentor-request" element={<MentorRequest />} />
               <Route path="/forum/new" element={<NewPostForm />} />
               <Route path="/post/:id" element={<PostDetail />} />
+              <Route path="/Membership" element={<Membership />} /> 
               <Route path="*" element={<NotFound />} />
             </Routes>
           </div>

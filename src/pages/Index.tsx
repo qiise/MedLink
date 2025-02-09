@@ -96,10 +96,10 @@ const Index = () => {
         <header className="bg-black bg-opacity-90 text-white p-4 fixed top-0 w-full z-50 backdrop-blur-sm">
           <div className="max-w-7xl mx-auto flex items-center justify-between">
             <div className="text-xl font-semibold tracking-tight hover:opacity-80 transition-opacity cursor-pointer">
-              CompanyName
+              MedLink
             </div>
 
-            <div className="text-xl font-medium tracking-wide absolute left-1/2 -translate-x-1/2">
+            <div className="text-3xl font-bold tracking-wide absolute left-1/2 -translate-x-1/2">
               FORUM
             </div>
 

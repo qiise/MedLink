@@ -12,6 +12,8 @@ import Opportunities from './pages/Opportunities';  // Define these pages
 import CASPer from './pages/CASPer';  // Define these pages
 import Schools from './pages/Schools';  // Define these pages
 import Random from './pages/Random';  // Define these pages
+import PostDetail from './pages/PostDetail';  // Post Detail Page
+
 
 
 
@@ -35,10 +37,12 @@ function App() {
         <Route path="/CASPer" element={<CASPer />} />
         <Route path="/Schools" element={<Schools />} />
         <Route path="/Random" element={<Random />} />
+        <Route path="/post/:id" element={<PostDetail />} />
 
       </Routes>
     </Router>
   );
 }
+
 
 export default App;

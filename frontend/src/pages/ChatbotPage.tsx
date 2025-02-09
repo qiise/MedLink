@@ -1,4 +1,3 @@
-// filepath: /Users/david/Documents/Development/DevFest2025/DevFest2025/frontend/src/pages/Index.tsx
 import { useState } from "react";
 import { Message } from "@/types/chat";
 import { ChatMessage } from "@/components/ChatMessage";
@@ -20,7 +19,6 @@ const ChatbotPage = () => {
     const { toast } = useToast();
 
     const handleSendMessage = async (content: string) => {
-        // Add user message
         const userMessage: Message = {
             id: Date.now().toString(),
             content,
@@ -30,22 +28,37 @@ const ChatbotPage = () => {
         setMessages((prev) => [...prev, userMessage]);
         setIsTyping(true);
 
-        // Simulate bot response
-        setTimeout(() => {
+        try {
+            const response = await fetch("http://localhost:8000/api/chatbot/chat/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ message: content }),
+            });
+
+            if (!response.ok) {
+                throw new Error("Failed to fetch response from chatbot API");
+            }
+
+            const data = await response.json();
+
             const botMessage: Message = {
                 id: (Date.now() + 1).toString(),
-                content: "Thank you for your response. I'm analyzing it and will provide feedback shortly.",
+                content: data.content,
                 sender: "bot",
                 timestamp: new Date(),
             };
             setMessages((prev) => [...prev, botMessage]);
-            setIsTyping(false);
-
+        } catch (error) {
             toast({
-                title: "Message sent",
-                description: "Your message has been received and processed.",
+                title: "Error",
+                description: "Failed to get response from chatbot.",
+                variant: "destructive",
             });
-        }, 1500);
+        } finally {
+            setIsTyping(false);
+        }
     };
 
     return (

@@ -1,29 +1,50 @@
-import openai
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from .models import InterviewResponse
+import os
+import json
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from groq import Groq
 
-openai.api_key = "your_openai_api_key"
+# Initialize Groq client
+client = Groq(
+    api_key=os.environ.get("GROQ_API_KEY"),
+)
 
 
-@api_view(["POST"])
+@csrf_exempt
 def chat_with_ai(request):
-    user_input = request.data.get("message")
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            user_message = data.get("message", "")
 
-    prompt = f"You are a medical school interviewer. Ask a question and evaluate the response: {user_input}"
+            if not user_message:
+                return JsonResponse({"error": "Message is required"}, status=400)
 
-    response = openai.ChatCompletion.create(
-        model="gpt-4", messages=[{"role": "system", "content": prompt}]
-    )
+            # Call Groq API with enhanced system behavior
+            chat_completion = client.chat.completions.create(
+                messages=[
+                    {
+                        "role": "system",
+                        "content": "You are a helpful assistant that provides expert-level responses for medical school interview preparation.",
+                    },
+                    {"role": "user", "content": user_message},
+                ],
+                model="deepseek-r1-distill-llama-70b",
+                temperature=0.5,
+                max_completion_tokens=1024,
+                top_p=1,
+                stop=None,
+                stream=False,
+            )
 
-    ai_response = response["choices"][0]["message"]["content"]
+            # Extract AI response
+            ai_response = chat_completion.choices[0].message.content
 
-    # Store response in database
-    InterviewResponse.objects.create(
-        user_id=1,  # Replace with actual user ID
-        question=user_input,
-        response=ai_response,
-        feedback="AI-generated feedback here",
-    )
+            print(ai_response)
 
-    return Response({"reply": ai_response})
+            return JsonResponse({"content": ai_response})
+
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)
+
+    return JsonResponse({"error": "Invalid request method"}, status=405)

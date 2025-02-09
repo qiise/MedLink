@@ -1,57 +1,62 @@
 import { useState } from "react";
+import axios from "axios";
+import { Message } from "@/types/chat";
+import { ChatMessage } from "@/components/ChatMessage";
+import { ChatInput } from "@/components/ChatInput";
+import { TypingIndicator } from "@/components/TypingIndicator";
 
-// Define the message type
-interface Message {
-    sender: "user" | "bot";
-    text: string;
-}
+const INITIAL_MESSAGE: Message = {
+    id: "welcome",
+    content:
+        "Hi! I'm your AI medical school interview assistant. Ask me anything about the interview process!",
+    sender: "bot",
+    timestamp: new Date(),
+};
 
-const Chatbot: React.FC = () => {
-    const [messages, setMessages] = useState<Message[]>([]);
-    const [input, setInput] = useState<string>("");
+const Chatbot = () => {
+    const [messages, setMessages] = useState<Message[]>([INITIAL_MESSAGE]);
+    const [isTyping, setIsTyping] = useState(false);
 
-    const sendMessage = async () => {
-        if (!input.trim()) return;
-
-        // Add user message to chat
-        const newMessage: Message = { sender: "user", text: input };
-        setMessages([...messages, newMessage]);
+    const handleSendMessage = async (content: string) => {
+        const userMessage: Message = {
+            id: Date.now().toString(),
+            content,
+            sender: "user",
+            timestamp: new Date(),
+        };
+        setMessages((prev) => [...prev, userMessage]);
+        setIsTyping(true);
 
         try {
-            const response = await fetch("http://localhost:8000/api/chatbot/chat/", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ message: input }),
+            const response = await axios.post("http://localhost:8000/api/chatbot/chat/", {
+                message: content,
             });
 
-            const data: { reply: string } = await response.json();
-
-            // Add bot response to chat
-            const botMessage: Message = { sender: "bot", text: data.reply };
-            setMessages((prevMessages) => [...prevMessages, botMessage]);
+            if (response.data.reply) {
+                const botMessage: Message = {
+                    id: (Date.now() + 1).toString(),
+                    content: response.data.reply,
+                    sender: "bot",
+                    timestamp: new Date(),
+                };
+                setMessages((prev) => [...prev, botMessage]);
+            }
         } catch (error) {
             console.error("Error communicating with chatbot:", error);
         }
 
-        setInput(""); // Clear input field
+        setIsTyping(false);
     };
 
     return (
-        <div className="chat-container">
-            <div className="messages">
-                {messages.map((msg, index) => (
-                    <p key={index} className={msg.sender === "user" ? "user-message" : "bot-message"}>
-                        {msg.text}
-                    </p>
+        <div className="flex flex-col h-full p-4">
+            <div className="flex-1 space-y-4 overflow-y-auto">
+                {messages.map((message) => (
+                    <ChatMessage key={message.id} message={message} />
                 ))}
+                {isTyping && <TypingIndicator />}
             </div>
-            <input
-                type="text"
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                placeholder="Ask a question..."
-            />
-            <button onClick={sendMessage}>Send</button>
+            <ChatInput onSend={handleSendMessage} disabled={isTyping} />
         </div>
     );
 };

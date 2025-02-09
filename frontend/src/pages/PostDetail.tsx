@@ -37,12 +37,13 @@ const PostDetail = () => {
 
   const handleSubmitReply = () => {
     if (!newReply.trim()) return;
-
+  
     const replyPayload = {
-      author: "CurrentUser",
-      content: newReply
+      author: "CurrentUser",  // This should match the `author` field in your model
+      content: newReply,       // This should match the `content` field
+      timestamp: new Date().toISOString() 
     };
-
+  
     fetch(`http://127.0.0.1:8000/api/posts/${id}/replies/`, {
       method: 'POST',
       headers: {
@@ -50,7 +51,12 @@ const PostDetail = () => {
       },
       body: JSON.stringify(replyPayload),
     })
-    .then(response => response.json())
+    .then(response => {
+      if (!response.ok) {
+        return response.json().then(err => { throw new Error(JSON.stringify(err)); });
+      }
+      return response.json();
+    })
     .then(createdReply => {
       setReplies([createdReply, ...replies]);
       setNewReply("");
@@ -61,6 +67,7 @@ const PostDetail = () => {
     })
     .catch(error => console.error('Error posting reply:', error));
   };
+  
 
   if (!post) return <div>Loading...</div>;  // Show loading until post data is fetched
 
@@ -107,7 +114,13 @@ const PostDetail = () => {
               <div className="flex items-center text-sm text-gray-500">
                 <span>{reply.author}</span>
                 <span className="mx-2">•</span>
-                <span>{new Date(reply.timestamp).toLocaleString()}</span>  {/* Ensure proper date parsing */}
+                <span>{new Date(reply.timestamp).toLocaleString('en-US', { 
+                  month: 'numeric', 
+                  day: 'numeric', 
+                  year: 'numeric', 
+                  hour: 'numeric', 
+                  minute: '2-digit'  // This removes the seconds
+                })}</span>
               </div>
             </div>
           ))}

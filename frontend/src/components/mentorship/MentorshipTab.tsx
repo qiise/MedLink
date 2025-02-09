@@ -3,25 +3,25 @@ import { MentorCard } from "./MentorCard";
 
 const sampleMentors = [
   {
-    name: "Dr. Sarah Chen",
+    name: "Dr. Lydia Chilton",
     title: "Medical Student Mentor",
     specialty: "Internal Medicine",
     school: "Harvard Medical School",
-    imageUrl: "/placeholder.svg"
+    imageUrl: "/mentor1.jpg"
   },
   {
-    name: "Dr. James Wilson",
+    name: "Dr. Jae Woo Lee",
     title: "Admissions Advisor",
     specialty: "Pediatrics",
     school: "Stanford Medicine",
-    imageUrl: "/placeholder.svg"
+    imageUrl: "/mentor2.jpg"
   },
   {
-    name: "Dr. Emily Parker",
+    name: "Dr. Brian Borowski",
     title: "Research Mentor",
     specialty: "Neurology",
     school: "Johns Hopkins Medicine",
-    imageUrl: "/placeholder.svg"
+    imageUrl: "/mentor3.jpg"
   }
 ];
 

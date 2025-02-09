@@ -2,11 +2,11 @@ import { MessageCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 interface PostCardProps {
-  id: number;  // Add ID to the props
+  id: number;
   title: string;
   preview: string;
   author: string;
-  replies: number;
+  replies: number;  // Dynamic reply count
   timestamp: string;
 }
 
@@ -15,7 +15,7 @@ export function PostCard({ id, title, preview, author, replies, timestamp }: Pos
 
   return (
     <div 
-      onClick={() => navigate(`/post/${id}`)}  // Navigate using dynamic post ID
+      onClick={() => navigate(`/post/${id}`)}
       className="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow duration-200 animate-fade-up cursor-pointer"
     >
       <div className="space-y-2">
@@ -27,11 +27,17 @@ export function PostCard({ id, title, preview, author, replies, timestamp }: Pos
       <div className="flex items-center justify-between mt-4 text-sm text-gray-500">
         <div className="flex items-center space-x-4">
           <span>{author}</span>
-          <span>{timestamp}</span>
+          <span>{new Date(timestamp).toLocaleString('en-US', { 
+            month: 'numeric', 
+            day: 'numeric', 
+            year: 'numeric', 
+            hour: 'numeric', 
+            minute: '2-digit' 
+          })}</span>
         </div>
         <div className="flex items-center space-x-1">
           <MessageCircle className="w-4 h-4" />
-          <span>{replies}</span>
+          <span>{replies}</span>  {/* Updated reply count */}
         </div>
       </div>
     </div>

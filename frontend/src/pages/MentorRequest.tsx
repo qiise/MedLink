@@ -43,7 +43,7 @@ export default function MentorRequest() {
     <div className="min-h-screen bg-[#F6F8FA] py-12">
       <div className="max-w-2xl mx-auto px-4">
         <button
-          onClick={() => navigate("/")}
+          onClick={() => navigate("/profiles")}
           className="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-6"
         >
           <ArrowLeft className="w-4 h-4" />

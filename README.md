@@ -80,3 +80,14 @@ from django.utils import timezone
 all_posts = Post.objects.all()
 for post in all_posts:
     print(f"Post ID: {post.id}, Title: {post.title}, Author: {post.author}, Timestamp: {post.timestamp}, Replies: {post.replies}")
+```
+
+## API Endpoints
+- GET /api/posts/ - Retrieve all posts
+- POST /api/posts/ - Create a new post
+- GET /api/posts/{id}/ - Retrieve a specific post
+- POST /api/posts/{id}/replies/ - Add a reply to a post
+- GET /api/posts/{id}/replies/ - Retrieve replies for a specific post
+
+## Contributing
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.

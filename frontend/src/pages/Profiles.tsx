@@ -101,7 +101,7 @@ const MentorCard = ({ name, title, specialty, school, imageUrl }) => {
         alt={name} 
         className="w-24 h-24 rounded-full object-cover mr-6"
       />
-      <div className="flex-1 space-y-2">
+      <div className="flex-1 space-y-2 mr-4">
         <div>
           <h3 className="text-lg font-semibold text-gray-900">{name}</h3>
           <p className="text-[#0EA5E9]">{title}</p>
@@ -116,11 +116,12 @@ const MentorCard = ({ name, title, specialty, school, imageUrl }) => {
       <button
         onClick={handleConnect}
         disabled={isConnected}
-        className={`ml-4 px-4 py-2 rounded-lg transition-all flex items-center justify-center gap-2
+        className={`px-4 py-2 rounded-lg transition-all flex items-center justify-center gap-2
           ${isConnected 
             ? 'bg-green-500 text-white cursor-default'
             : 'bg-[#0EA5E9] text-white hover:opacity-90'
           }`}
+        style={{ transform: "translateX(-20px)" }}
       >
         {isConnected ? (
           <>

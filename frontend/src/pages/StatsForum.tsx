@@ -1,35 +1,78 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { MessageCircle } from "lucide-react";
 
-const Forum = () => {
-  const [posts, setPosts] = useState([]);
-  const [activeTab, setActiveTab] = useState(null);  // Track active tab
+interface Post {
+  id: number;
+  title: string;
+  preview: string;
+  author: string;
+  replies: number;
+  timestamp: string;
+}
+
+const StatsForum = () => {
+  // Mocked posts for StatsForum
+  const mockPosts: Post[] = [
+    {
+      id: 1,
+      title: "What are my chances with a 3.8 GPA and 515 MCAT?",
+      preview: "I have a 3.8 GPA and scored 515 on the MCAT. I'm curious about my chances of getting into a top med school. Any feedback appreciated!",
+      author: "HopefulMD2025",
+      replies: 20,
+      timestamp: "2025-02-09T7:08:00Z",
+    },
+    {
+      id: 2,
+      title: "Does clinical experience compensate for a lower GPA?",
+      preview: "I have extensive clinical experience but my GPA is 3.4. How much will this help in med school admissions?",
+      author: "FutureDoc",
+      replies: 15,
+      timestamp: "2025-02-08T11:14:00Z",
+    },
+    {
+      id: 3,
+      title: "Is a 500 MCAT score competitive?",
+      preview: "I just received my MCAT score and it's a 500. Should I retake it or apply to lower-tier schools?",
+      author: "MedAspirant",
+      replies: 10,
+      timestamp: "2025-02-07T13:33:00Z",
+    },
+    {
+      id: 4,
+      title: "GPA trend impact on med school applications",
+      preview: "My GPA has an upward trend from 3.2 to 3.8 over my undergrad years. How do admissions committees view this?",
+      author: "GradualGainer",
+      replies: 12,
+      timestamp: "2025-02-06T20:45:00Z",
+    },
+  ];
+
+  const [posts, setPosts] = useState<Post[]>(mockPosts);
   const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState<string>("stats");
+
 
   useEffect(() => {
-    fetch('http://127.0.0.1:8000/api/posts/')
-      .then(response => response.json())
-      .then((data) => {
-        const sortedPosts = data.sort((a: any, b: any) => {
-          return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime();
-        });
-        setPosts(sortedPosts);
-      })
-      .catch(error => console.error('Error fetching posts:', error));
-  }, []);
-  
-  
-
-  const handleTabClick = (tab) => {
+      fetch('http://127.0.0.1:8000/api/posts/')
+        .then(response => response.json())
+        .then(data => {
+          // Filter posts with specific IDs (e.g., IDs 1, 2, and 3)
+          const filteredPosts = data.filter((post: Post) => [32, 33, 34, 35].includes(post.id));
+          setPosts(filteredPosts);
+        })
+        .catch(error => console.error('Error fetching posts:', error));
+    }, []);
+  const handleTabClick = (tab: string) => {
     if (activeTab === tab) {
-      setActiveTab(null); // Unselect if the same tab is clicked again
+      setActiveTab(null);
+      navigate("/forum");
     } else {
-      setActiveTab(tab);  // Set new active tab
+      setActiveTab(tab);
+      navigate(`/forum/${tab}`);
     }
-    navigate(`/forum/${tab}`);
   };
 
   return (
@@ -66,9 +109,9 @@ const Forum = () => {
         />
         <div className="relative z-10 max-w-4xl mx-auto px-4 py-8">
           <div className="flex justify-between items-center mb-8">
-            <h1 className="text-3xl font-bold text-white">Community Forum</h1>
+            <h1 className="text-3xl font-bold text-white">Stats Forum</h1>
             <button 
-              onClick={() => navigate("/forum/new")}
+              onClick={() => navigate("/forum/stats/new")}
               className="px-4 py-2 bg-white text-black rounded-lg hover:opacity-90 transition-opacity"
             >
               New Post
@@ -78,14 +121,13 @@ const Forum = () => {
           <div className="mb-4 flex space-x-4">
             {["mcat", "interviews", "essays", "stats"].map((tab) => (
               <div 
-              key={tab}
-              onClick={() => handleTabClick(tab)}
-              className={`px-6 py-2 rounded-lg cursor-pointer transition-opacity 
-                ${activeTab === tab ? "bg-gray-400 text-white" : "bg-white text-black hover:bg-gray-200"} 
-                ${activeTab === tab ? "font-semibold" : ""}`}
-            >
-              {tab === "mcat" ? tab.toUpperCase() : tab.charAt(0).toUpperCase() + tab.slice(1)} {/* Make only MCAT in uppercase */}
-            </div>
+                key={tab}
+                onClick={() => handleTabClick(tab)}
+                className={`px-6 py-2 rounded-lg cursor-pointer transition-opacity 
+                  ${activeTab === tab ? "bg-gray-400 text-white font-semibold" : "bg-white text-black hover:bg-gray-200"}`}
+              >
+                {tab === "mcat" ? tab.toUpperCase() : tab.charAt(0).toUpperCase() + tab.slice(1)}
+              </div>
             ))}
           </div>
           <div className="space-y-4">
@@ -99,7 +141,7 @@ const Forum = () => {
   );
 };
 
-const PostCard = ({ id, title, preview, author, replies, timestamp }) => {
+const PostCard = ({ id, title, preview, author, replies, timestamp }: Post) => {
   const navigate = useNavigate();
   return (
     <motion.div
@@ -129,4 +171,4 @@ const PostCard = ({ id, title, preview, author, replies, timestamp }) => {
   );
 };
 
-export default Forum;
+export default StatsForum;

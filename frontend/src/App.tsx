@@ -15,6 +15,10 @@ import PostDetail from "./pages/PostDetail";
 import ChatbotPage from "./pages/ChatbotPage";
 import NewPostForm from "./pages/NewPostForm";
 import Membership from "./pages/Membership";
+import McatForum from "./pages/McatForum";
+import InterviewForum from "./pages/InterviewForum";
+import EssayForum from "./pages/EssayForum";
+import StatsForum from "./pages/StatsForum";
 
 const queryClient = new QueryClient();
 
@@ -39,6 +43,14 @@ const App = () => (
               <Route path="/forum/new" element={<NewPostForm />} />
               <Route path="/post/:id" element={<PostDetail />} />
               <Route path="/Membership" element={<Membership />} /> 
+              <Route path="/forum/mcat" element={<McatForum />} />
+              <Route path="/forum/mcat/new" element={<NewPostForm />} />
+              <Route path="/forum/interviews" element={<InterviewForum />} />
+              <Route path="/forum/interviews/new" element={<NewPostForm />} />
+              <Route path="/forum/essays" element={<EssayForum />} />
+              <Route path="/forum/essays/new" element={<NewPostForm />} />
+              <Route path="/forum/stats" element={<StatsForum />} />
+              <Route path="/forum/stats/new" element={<NewPostForm />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </div>

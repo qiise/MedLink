@@ -13,4 +13,4 @@ class ReplySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Reply
-        fields = '__all__'
+        fields = ['id', 'author', 'content', 'timestamp']

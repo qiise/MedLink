@@ -6,12 +6,12 @@ const Index = () => {
   const navigate = useNavigate();
   const [isHovered1, setIsHovered1] = useState(false);
   const [isHovered2, setIsHovered2] = useState(false);
-  const [username, setUsername] = useState("");
+  const [username, setUsername] = useState<string | null>("");
 
   useEffect(() => {
     const handleStorageChange = () => {
       const storedUser = localStorage.getItem("currentUser");
-      setUsername(storedUser || "");
+      setUsername(storedUser);
     };
 
     // Initial check for stored user
@@ -24,6 +24,8 @@ const Index = () => {
       window.removeEventListener("storage", handleStorageChange);
     };
   }, []);
+
+  const isUserSignedIn = username !== null; // Check if user is signed in
 
   return (
     <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center overflow-hidden relative">
@@ -86,14 +88,17 @@ const Index = () => {
           </motion.p>
 
           <div className="flex justify-center space-x-6">
+            {/* Forum Button */}
             <motion.button
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.6, duration: 0.8 }}
               onHoverStart={() => setIsHovered1(true)}
               onHoverEnd={() => setIsHovered1(false)}
-              onClick={() => navigate("/forum")}
-              className="relative inline-flex items-center px-8 py-3 overflow-hidden bg-white text-black rounded-full group focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
+              onClick={() => isUserSignedIn && navigate("/forum")}
+              disabled={!isUserSignedIn}
+              className={`relative inline-flex items-center px-8 py-3 overflow-hidden rounded-full group focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 
+                ${isUserSignedIn ? "bg-white text-black" : "bg-gray-400 text-gray-700 cursor-not-allowed"}`}
             >
               <span className="relative">Forums</span>
               <motion.span
@@ -102,18 +107,21 @@ const Index = () => {
                 transition={{ duration: 0.3 }}
                 className="ml-2"
               >
-                  ➚
+                  →
               </motion.span>
             </motion.button>
 
+            {/* Mentorship Button */}
             <motion.button
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.6, duration: 0.8 }}
               onHoverStart={() => setIsHovered2(true)}
               onHoverEnd={() => setIsHovered2(false)}
-              onClick={() => navigate("/profiles")}
-              className="relative inline-flex items-center px-8 py-3 overflow-hidden bg-white text-black rounded-full group focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
+              onClick={() => isUserSignedIn && navigate("/profiles")}
+              disabled={!isUserSignedIn}
+              className={`relative inline-flex items-center px-8 py-3 overflow-hidden rounded-full group focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 
+                ${isUserSignedIn ? "bg-white text-black" : "bg-gray-400 text-gray-700 cursor-not-allowed"}`}
             >
               <span className="relative">Mentorship</span>
               <motion.span
@@ -122,7 +130,7 @@ const Index = () => {
                 transition={{ duration: 0.3 }}
                 className="ml-2"
               >
-                  ➚
+                  →
               </motion.span>
             </motion.button>
           </div>

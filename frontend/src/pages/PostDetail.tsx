@@ -39,7 +39,7 @@ const PostDetail = () => {
     if (!newReply.trim()) return;
   
     const replyPayload = {
-      author: "CurrentUser",  // This should match the `author` field in your model
+      author: localStorage.getItem("currentUser"),  // This should match the `author` field in your model
       content: newReply,       // This should match the `content` field
       timestamp: new Date().toISOString() 
     };

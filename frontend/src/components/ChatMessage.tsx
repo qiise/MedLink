@@ -37,7 +37,7 @@ export const ChatMessage = ({ message }: ChatMessageProps) => {
                         : "bg-medical-primary text-white"
                 )}
             >
-                {message.content}
+                {<div dangerouslySetInnerHTML={{ __html: message.content }} />}
             </div>
         </div>
     );

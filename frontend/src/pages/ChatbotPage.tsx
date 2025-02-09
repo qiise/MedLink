@@ -4,6 +4,8 @@ import { ChatMessage } from "@/components/ChatMessage";
 import { ChatInput } from "@/components/ChatInput";
 import { TypingIndicator } from "@/components/TypingIndicator";
 import { useToast } from "@/hooks/use-toast";
+import { marked } from "marked";
+import DOMPurify from "dompurify";
 import { motion } from "framer-motion";
 
 const INITIAL_MESSAGE: Message = {
@@ -29,21 +31,38 @@ const ChatbotPage = () => {
         setMessages((prev) => [...prev, userMessage]);
         setIsTyping(true);
 
+        try {
+            const response = await fetch("http://localhost:8000/api/chatbot/chat/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ message: content }),
+            });
+
+            if (!response.ok) {
+                throw new Error("Failed to fetch response from chatbot API");
+            }
+
+            const data = await response.json();
+
         setTimeout(() => {
             const botMessage: Message = {
                 id: (Date.now() + 1).toString(),
-                content: "Thank you for your response. I'm analyzing it and will provide feedback shortly.",
+                content: DOMPurify.sanitize(marked.parse(data.content)),
                 sender: "bot",
                 timestamp: new Date(),
             };
             setMessages((prev) => [...prev, botMessage]);
-            setIsTyping(false);
-
+        } catch (error) {
             toast({
-                title: "Message sent",
-                description: "Your message has been received and processed.",
+                title: "Error",
+                description: "Failed to get response from chatbot.",
+                variant: "destructive",
             });
-        }, 1500);
+        } finally {
+            setIsTyping(false);
+        }
     };
 
     return (
@@ -89,7 +108,9 @@ const ChatbotPage = () => {
                         <div className="flex-1 space-y-4 overflow-y-auto p-4">
                             {messages.map((message) => (
                                 <ChatMessage key={message.id} message={message} />
+
                             ))}
+
                             {isTyping && (
                                 <div className="flex items-center gap-2">
                                     <div className="h-8 w-8 rounded-full bg-medical-primary flex items-center justify-center">

@@ -17,9 +17,11 @@ const Login = () => {
     // Simulated login - would normally connect to backend
     if (email && password) {
       console.log("Login attempt:", { email, password });
+      localStorage.setItem("currentUser", email);  // Store username in localStorage
+      window.dispatchEvent(new Event("storage"));  // Notify NavBar about login
       toast({
         title: "Login Successful",
-        description: "Welcome back!",
+        description: `Welcome back, ${email}!`,
       });
       navigate("/");
     } else {

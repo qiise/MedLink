@@ -2,89 +2,157 @@
 import { motion } from "framer-motion";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import SearchBar from "@/components/SearchBar"; 
+import {useState} from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { Check } from "lucide-react";
+import { useToast } from "@/components/ui/use-toast";
 
 const Profiles = () => {
   // Placeholder data - in a real app, this would come from an API
-  const profiles = [
+  const sampleMentors = [
     {
-      id: 1,
-      name: "Sarah Johnson",
-      role: "Senior Frontend Developer",
-      company: "TechCorp Inc.",
-      location: "San Francisco, CA",
-      connections: 500,
-      image: "https://i.pravatar.cc/150?img=1",
+      name: "Dr. Lydia Chilton",
+      title: "Medical Student Mentor",
+      specialty: "Internal Medicine",
+      school: "Harvard Medical School",
+      imageUrl: "/mentor1.jpg"
     },
     {
-      id: 4,
-      name: "Alex Kumar",
-      role: "Product Manager",
-      company: "InnovateCo",
-      location: "Seattle, WA",
-      connections: 612,
-      image: "https://i.pravatar.cc/150?img=4",
+      name: "Dr. Jae Woo Lee",
+      title: "Admissions Advisor",
+      specialty: "Pediatrics",
+      school: "Stanford Medicine",
+      imageUrl: "/mentor2.jpg"
     },
     {
-      id: 5,
-      name: "Lisa Park",
-      role: "Backend Developer",
-      company: "CloudTech Solutions",
-      location: "Austin, TX",
-      connections: 345,
-      image: "https://i.pravatar.cc/150?img=5",
-    },
+      name: "Dr. Brian Borowski",
+      title: "Research Mentor",
+      specialty: "Neurology",
+      school: "Johns Hopkins Medicine",
+      imageUrl: "/mentor3.jpg"
+    }
   ];
 
 
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] bg-gray-50">
+    <div className="min-h-[calc(100vh-4rem)] bg-gray-50 relative">
       <ScrollArea className="h-[calc(100vh-4rem)]">
-        <div className="max-w-4xl mx-auto px-4 py-8">
-          <h1 className=" flex items-center justify-center text-3xl font-bold mb-8">Find a mentor today!
+      <motion.div 
+        className="absolute inset-0 z-0" 
+        animate={{
+          background: [
+            `radial-gradient(circle at 20% 20%, #0EA5E9 0%, transparent 50%),
+             radial-gradient(circle at 75% 20%, #0EA5E9 0%, transparent 50%),
+             black`,
+            `radial-gradient(circle at 20% 20%, #0EA5E9 0%, transparent 55%),
+             radial-gradient(circle at 80% 80%, #0EA5E9 0%, transparent 55%),
+             black`,
+            `radial-gradient(circle at 30% 30%, #0EA5E9 0%, transparent 50%),
+             radial-gradient(circle at 75% 75%, #0EA5E9 0%, transparent 50%),
+             black`,
+          ]
+        }}
+        transition={{
+          duration: 4,
+          repeat: Infinity,
+          repeatType: "reverse",
+          ease: "easeInOut"
+        }}
+      />
+      <div 
+        className="absolute inset-0 z-0"
+        style={{
+          backgroundImage: `radial-gradient(rgba(255, 255, 255, 0.15) 2px, transparent 2px)`,
+          backgroundSize: '30px 30px'
+        }}
+      />
+        <div className="relative z-10 max-w-4xl mx-auto px-4 py-8">
+          <h1 className=" relative z-10 flex items-center justify-center text-3xl font-bold mb-8 text-white">Find a mentor today!
 
           </h1>
 
     
             <SearchBar />
         
-          <div className="space-y-6">
-            {profiles.map((profile) => (
-              <motion.div
-                key={profile.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3 }}
-                className="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow"
-              >
-                <div className="flex items-center space-x-6">
-                  <img
-                    src={profile.image}
-                    alt={profile.name}
-                    className="w-24 h-24 rounded-full object-cover"
-                  />
-                  <div className="flex-1">
-                    <h2 className="text-xl font-semibold text-gray-900">
-                      {profile.name}
-                    </h2>
-                    <p className="text-gray-600 mt-1">{profile.role}</p>
-                    <p className="text-gray-500 mt-1">{profile.company}</p>
-                    <div className="flex items-center space-x-4 mt-2 text-sm text-gray-500">
-                      <span>{profile.location}</span>
-                      <span>•</span>
-                      <span>{profile.connections} connections</span>
-                    </div>
-                  </div>
-                  <button className="px-4 py-2 border border-blue-600 text-blue-600 rounded-full hover:bg-blue-50 transition-colors">
-                    Connect
-                  </button>
-                </div>
-              </motion.div>
+            <div className="space-y-6">
+            {sampleMentors.map((mentor, index) => (
+              <MentorCard key={index} {...mentor} />
             ))}
           </div>
         </div>
       </ScrollArea>
     </div>
+  );
+};
+
+const MentorCard = ({ name, title, specialty, school, imageUrl }) => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [isConnected, setIsConnected] = useState(location.state?.connectedMentor === name);
+  const { toast } = useToast();
+
+  const handleConnect = () => {
+    if (isConnected) {
+      // Handle disconnect and show cancel message
+      setIsConnected(false); // Mark as disconnected
+
+      // Show toast for cancellation
+      toast({
+        title: "Request Canceled",
+        description: `Your connection request to ${name} has been canceled.`,
+      });
+    } else {
+      // Normally, handle connection (this part is handled elsewhere in your app)
+      navigate("/MentorRequest", {
+        state: { mentor: { name, title, specialty, school } }
+      });
+      setIsConnected(true); // Mark as connected
+    }
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+      className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-200 animate-fade-up flex items-center p-4"
+    >
+      <img 
+        src={imageUrl} 
+        alt={name} 
+        className="w-24 h-24 rounded-full object-cover mr-6"
+      />
+      <div className="flex-1 space-y-2">
+        <div>
+          <h3 className="text-lg font-semibold text-gray-900">{name}</h3>
+          <p className="text-primary">{title}</p>
+        </div>
+        <p className="text-sm text-gray-600">
+          <span className="font-medium">Specialty:</span> {specialty}
+        </p>
+        <p className="text-sm text-gray-600">
+          <span className="font-medium">School:</span> {school}
+        </p>
+      </div>
+      <button
+        onClick={handleConnect}
+        className={`ml-4 px-4 py-2 rounded-lg transition-all flex items-center justify-center gap-2
+          ${isConnected 
+            ? 'bg-green-500 text-white'
+            : 'bg-accent text-gray-900 hover:opacity-90'
+          }`}
+      >
+        {isConnected ? (
+          <>
+            <Check className="w-4 h-4" />
+            Connected
+          </>
+        ) : (
+          'Connect'
+        )}
+      </button>
+    </motion.div>
   );
 };
 

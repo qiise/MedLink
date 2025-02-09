@@ -11,6 +11,8 @@ import Signup from "./pages/Signup";
 import Forum from "./pages/Forum";
 import Profiles from "./pages/Profiles";
 import NotFound from "./pages/NotFound";
+import Membership from "./pages/Membership";
+import MentorRequest from "./pages/MentorRequest";
 
 const queryClient = new QueryClient();
 
@@ -29,7 +31,10 @@ const App = () => (
               <Route path="/signup" element={<Signup />} />
               <Route path="/forum" element={<Forum />} />
               <Route path="/profiles" element={<Profiles />} />
+              <Route path="/Membership" element={<Membership />} /> 
               <Route path="*" element={<NotFound />} />
+              <Route path="/MentorRequest" element={<MentorRequest />} />
+          
             </Routes>
           </div>
         </div>

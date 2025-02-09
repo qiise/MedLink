@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 
@@ -7,7 +7,24 @@ const Index = () => {
   const navigate = useNavigate();
   const [isHovered1, setIsHovered1] = useState(false);
   const [isHovered2, setIsHovered2] = useState(false);
+  const [username, setUsername] = useState("");
+  
+  useEffect(() => {
+    const handleStorageChange = () => {
+      const storedUser = localStorage.getItem("currentUser");
+      setUsername(storedUser || "");
+    };
 
+    // Initial check for stored user
+    handleStorageChange();
+
+    // Listen for changes in localStorage (login/logout)
+    window.addEventListener("storage", handleStorageChange);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
+  }, []);
   return (
     <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center overflow-hidden relative">
       {/* Animated gradient background */}
@@ -56,7 +73,7 @@ const Index = () => {
             transition={{ delay: 0.2, duration: 0.8 }}
             className="text-4xl md:text-6xl font-bold tracking-tight text-white"
           >
-            Welcome to MedLink!
+            {username ? `Welcome to MedLink, ${username}!` : "Welcome to MedLink!"}
           </motion.h1>
           
           <motion.p

@@ -6,39 +6,31 @@ Features
 
 Backend (Django)
 
-CRUD operations for forum posts and replies
-
-Timestamps for posts and replies with timezone handling
-
-API endpoints for frontend integration
-
-Chatbot integration
+- CRUD operations for forum posts and replies
+- Timestamps for posts and replies with timezone handling
+- API endpoints for frontend integration
+- Chatbot integration
 
 Frontend (React + TypeScript)
 
-User-friendly forum and mentorship interface
+- User-friendly forum and mentorship interface
+- Dynamic navigation with protected routes based on authentication
+- Integration with backend API for real-time data updates
+- Smooth animations using Framer Motion
+- Ability to connect with mentors
 
-Dynamic navigation with protected routes based on authentication
-
-Integration with backend API for real-time data updates
-
-Smooth animations using Framer Motion
-
-Ability to connect with mentors
 
 Technologies Used
 
-Backend: Django, Django REST Framework, SQLite (default, can be switched to other databases)
+- Backend: Django, Django REST Framework, SQLite (default, can be switched to other databases)
+- Frontend: React, TypeScript, Tailwind CSS, Framer Motion
 
-Frontend: React, TypeScript, Tailwind CSS, Framer Motion
 
-Getting Started
 
 Prerequisites
 
-Python 3.x
-
-npm
+- Python 3.x
+- npm
 
 Backend Installation
 
@@ -80,17 +72,12 @@ all_posts = Post.objects.all()
 for post in all_posts:
     print(f"Post ID: {post.id}, Title: {post.title}, Author: {post.author}, Timestamp: {post.timestamp}, Replies: {post.replies}")
 
-API Endpoints
-
-GET /api/posts/ - Retrieve all posts
-
-POST /api/posts/ - Create a new post
-
-GET /api/posts/{id}/ - Retrieve a specific post
-
-POST /api/posts/{id}/replies/ - Add a reply to a post
-
-GET /api/posts/{id}/replies/ - Retrieve replies for a specific post
+- API Endpoints
+- GET /api/posts/ - Retrieve all posts
+- POST /api/posts/ - Create a new post
+- GET /api/posts/{id}/ - Retrieve a specific post
+- POST /api/posts/{id}/replies/ - Add a reply to a post
+- GET /api/posts/{id}/replies/ - Retrieve replies for a specific post
 
 Contributing
 

@@ -37,7 +37,7 @@ export function PostCard({ id, title, preview, author, replies, timestamp }: Pos
         </div>
         <div className="flex items-center space-x-1">
           <MessageCircle className="w-4 h-4" />
-          <span>{replies}</span>  {/* Updated reply count */}
+          <span>{replies}</span>
         </div>
       </div>
     </div>

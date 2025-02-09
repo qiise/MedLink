@@ -57,7 +57,7 @@ export function MentorCard({ name, title, specialty, school, imageUrl }: MentorC
           {isConnected ? (
             <>
               <Check className="w-4 h-4" />
-              Connected
+              Request to connect sent!
             </>
           ) : (
             'Connect'

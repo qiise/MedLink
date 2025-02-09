@@ -1,59 +1,133 @@
-
-import { useState } from "react";
-import { NavTabs } from "@/components/NavTabs";
-import { ForumTab } from "@/components/forum/ForumTab";
-import { MentorshipTab } from "@/components/mentorship/MentorshipTab";
-import { ArrowDown } from "lucide-react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
 const Index = () => {
-  const [activeTab, setActiveTab] = useState("forum");
+  const navigate = useNavigate();
+  const [isHovered1, setIsHovered1] = useState(false);
+  const [isHovered2, setIsHovered2] = useState(false);
+  const [username, setUsername] = useState("");
+
+  useEffect(() => {
+    const handleStorageChange = () => {
+      const storedUser = localStorage.getItem("currentUser");
+      setUsername(storedUser || "");
+    };
+
+    // Initial check for stored user
+    handleStorageChange();
+
+    // Listen for changes in localStorage (login/logout)
+    window.addEventListener("storage", handleStorageChange);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
+  }, []);
 
   return (
-    <div className="min-h-screen bg-[#F6F8FA]">
-      {/* Hero Section */}
-      <div className="bg-gradient-to-b from-primary/10 to-background pt-20 pb-32 px-4">
-        <div className="max-w-4xl mx-auto text-center space-y-6 animate-fade-in">
-          <h1 className="text-5xl font-bold text-gray-900">
-            Welcome to PreMed Pals Hub
-          </h1>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Connect with fellow pre-med students, share experiences, and find mentorship
-            on your journey to medical school.
-          </p>
-          <div className="flex justify-center gap-4 mt-8">
-            <button 
-              onClick={() => setActiveTab("forum")}
-              className="px-6 py-3 bg-primary text-white rounded-lg hover:opacity-90 transition-opacity"
-            >
-              Join Discussions
-            </button>
-            <button 
-              onClick={() => setActiveTab("mentorship")}
-              className="px-6 py-3 bg-accent text-gray-900 rounded-lg hover:opacity-90 transition-opacity"
-            >
-              Find a Mentor
-            </button>
-          </div>
-          <div className="pt-12 animate-bounce">
-            <ArrowDown className="mx-auto text-gray-400" />
-          </div>
-        </div>
-      </div>
+    <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center overflow-hidden relative">
+      {/* Animated gradient background */}
+      <motion.div 
+        className="absolute inset-0" 
+        animate={{
+          background: [
+            `radial-gradient(circle at 20% 20%, #0EA5E9 0%, transparent 50%),
+             radial-gradient(circle at 75% 20%, #0EA5E9 0%, transparent 50%),
+             black`,
+            `radial-gradient(circle at 20% 20%, #0EA5E9 0%, transparent 55%),
+             radial-gradient(circle at 80% 80%, #0EA5E9 0%, transparent 55%),
+             black`,
+            `radial-gradient(circle at 30% 30%, #0EA5E9 0%, transparent 50%),
+             radial-gradient(circle at 75% 75%, #0EA5E9 0%, transparent 50%),
+             black`,
+          ]
+        }}
+        transition={{
+          duration: 4,
+          repeat: Infinity,
+          repeatType: "reverse",
+          ease: "easeInOut"
+        }}
+      />
+      
+      {/* Dot overlay */}
+      <div 
+        className="absolute inset-0"
+        style={{
+          backgroundImage: `radial-gradient(rgba(255, 255, 255, 0.15) 2px, transparent 2px)`,
+          backgroundSize: '30px 30px'
+        }}
+      />
 
-      {/* Navigation and Content */}
-      <main className="max-w-7xl mx-auto px-4 -mt-20">
-        <div className="bg-white rounded-xl shadow-sm p-6 animate-fade-up">
-          <NavTabs activeTab={activeTab} onTabChange={setActiveTab} />
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="space-y-8"
+        >
+          <motion.h1
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2, duration: 0.8 }}
+            className="text-4xl md:text-6xl font-bold tracking-tight text-white"
+          >
+            {username ? `Welcome to MedLink, ${username}!` : "Welcome to MedLink!"}
+          </motion.h1>
           
-          <div className="mt-8">
-            {activeTab === "forum" ? (
-              <ForumTab />
-            ) : (
-              <MentorshipTab />
-            )}
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4, duration: 0.8 }}
+            className="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto"
+          >
+            Discover your future through personalized assistance.
+          </motion.p>
+
+          <div className="flex justify-center space-x-6">
+            <motion.button
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.6, duration: 0.8 }}
+              onHoverStart={() => setIsHovered1(true)}
+              onHoverEnd={() => setIsHovered1(false)}
+              onClick={() => navigate("/forum")}
+              className="relative inline-flex items-center px-8 py-3 overflow-hidden bg-white text-black rounded-full group focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
+            >
+              <span className="relative">Forums</span>
+              <motion.span
+                initial={{ x: 0, opacity: 0 }}
+                animate={{ x: isHovered1 ? 10 : 0, opacity: isHovered1 ? 1 : 0 }}
+                transition={{ duration: 0.3 }}
+                className="ml-2"
+              >
+                  ➚
+              </motion.span>
+            </motion.button>
+
+            <motion.button
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.6, duration: 0.8 }}
+              onHoverStart={() => setIsHovered2(true)}
+              onHoverEnd={() => setIsHovered2(false)}
+              onClick={() => navigate("/profiles")}
+              className="relative inline-flex items-center px-8 py-3 overflow-hidden bg-white text-black rounded-full group focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
+            >
+              <span className="relative">Mentorship</span>
+              <motion.span
+                initial={{ x: 0, opacity: 0 }}
+                animate={{ x: isHovered2 ? 10 : 0, opacity: isHovered2 ? 1 : 0 }}
+                transition={{ duration: 0.3 }}
+                className="ml-2"
+              >
+                  ➚
+              </motion.span>
+            </motion.button>
           </div>
-        </div>
-      </main>
+        </motion.div>
+      </div>
     </div>
   );
 };

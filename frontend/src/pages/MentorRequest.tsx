@@ -36,7 +36,7 @@ export default function MentorRequest() {
       description: `Your connection request has been sent to ${mentor.name}.`,
     });
     
-    navigate("/", { state: { connectedMentor: mentor.name } });
+    navigate("/profiles", { state: { connectedMentor: mentor.name } });
   };
 
   return (

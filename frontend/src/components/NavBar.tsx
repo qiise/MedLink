@@ -32,11 +32,6 @@ const NavBar = () => {
   };
 
   let navBarText = "";
-  if(location.pathname === "/profiles" || location.pathname === "/Membership"){
-    navBarText="MENTORSHIP";
-  }else if(location.pathname ==="/login"){
-    navBarText = "LOGIN";
-  }
 
   return (
     <nav className="fixed top-0 left-0 right-0 bg-black shadow-sm z-50">

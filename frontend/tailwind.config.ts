@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -45,6 +44,11 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        medical: {
+          primary: "#4A90A0",
+          secondary: "#E8F3F1",
+          accent: "#F5F7F9",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -70,10 +74,20 @@ export default {
             opacity: "1",
           },
         },
+        "message-fade-in": {
+          "0%": { opacity: "0", transform: "translateY(10px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+        "typing-dot": {
+          "0%, 100%": { opacity: "0.2" },
+          "50%": { opacity: "0.8" },
+        },
       },
       animation: {
         "fade-up": "fade-up 0.5s ease-out",
         "fade-in": "fade-in 0.3s ease-out",
+        "message-fade-in": "message-fade-in 0.3s ease-out",
+        "typing-dot": "typing-dot 1.4s infinite",
       },
     },
   },

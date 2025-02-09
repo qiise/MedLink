@@ -1,8 +1,8 @@
-Django Forum Backend & Frontend
+# Django Forum Backend & Frontend
 
 This repository contains both the backend and frontend code for a forum and mentorship application built using Django and React (with TypeScript). The backend manages forum posts and replies, while the frontend provides an interactive user interface for creating and viewing discussions.
 
-Features
+# Features
 
 Backend (Django)
 
@@ -20,19 +20,19 @@ Frontend (React + TypeScript)
 - Ability to connect with mentors
 
 
-Technologies Used
+# Technologies Used
 
 - Backend: Django, Django REST Framework, SQLite (default, can be switched to other databases)
 - Frontend: React, TypeScript, Tailwind CSS, Framer Motion
 
 
 
-Prerequisites
+# Prerequisites
 
 - Python 3.x
 - npm
 
-Backend Installation
+# Backend Installation
 
 Clone the repository:git clone https://github.com/qiise/DevFest2025.git
 

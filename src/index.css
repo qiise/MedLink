@@ -75,3 +75,14 @@
   animation: heartbeat 1.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
   transform-origin: center;
 }
+
+@keyframes heartbeat-peaks {
+  0% { stroke-dashoffset: 400; }
+  100% { stroke-dashoffset: 0; }
+}
+
+.heartbeat-animation {
+  stroke-dasharray: 400;
+  stroke-dashoffset: 400;
+  animation: heartbeat-peaks 3s infinite linear;
+}

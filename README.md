@@ -2,7 +2,7 @@
 
 # MedLink Backend & Frontend
 
-This repository contains both the backend and frontend code for a forum and mentorship application built using Django and React (with TypeScript). The backend manages forum posts and replies, while the frontend provides an interactive user interface for creating and viewing discussions. A chatbot to help with interview prep has also been integrated.
+This repository contains both the backend and frontend code for a forum and mentorship application built using Django and React (with TypeScript). The backend manages forum posts and replies, while the frontend provides an interactive user interface for creating and viewing discussions. A chatbot to help with interview prep has also been integrated. (https://devpost.com/software/medlink-c4792u)
 
 ## Features
 

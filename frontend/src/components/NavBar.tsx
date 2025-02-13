@@ -27,7 +27,7 @@ const NavBar = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("currentUser");
-    localStorage.removeItem("connectedMentors"); 
+    localStorage.removeItem("connectedMentors");
     window.dispatchEvent(new Event("storage"));  // Notify other components about logout
     navigate("/");  // Redirect to homepage
   };
@@ -76,7 +76,7 @@ const NavBar = () => {
             )}
             {location.pathname === "/profiles" && (
               <Link
-                to="/Membership" 
+                to="/Membership"
                 className="text-yellow-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
               >
                 Membership Prices
